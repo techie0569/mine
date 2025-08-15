@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hey, Founder — You’ve Got This 💫</title>
+  <meta name="theme-color" content="#111827" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#0f172a; /* slate-900 */
+      --bg2:#111827; /* gray-900 */
+      --acc:#f59e0b; /* amber-500 */
+      --soft:#c7d2fe; /* indigo-200 */
+      --card:#111827e6;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:#f8fafc; background:radial-gradient(1200px 800px at 80% -10%, #1f2937, transparent),
+                   radial-gradient(1200px 800px at -10% 120%, #0ea5e9, transparent),
+                   linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    .stars{position:fixed; inset:0; pointer-events:none; background-image:radial-gradient(#ffffff66 1px, transparent 1px);
+      background-size: 3px 3px; opacity:.08;}
+    header{display:flex; align-items:center; justify-content:center; text-align:center; padding:96px 20px 40px; position:relative}
+    .title{
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight:700; letter-spacing:.5px; margin:0 0 12px;
+    }
+    .script{font-family:Pacifico, cursive; font-size: clamp(20px, 3.5vw, 32px); color:var(--soft)}
+    .wrap{max-width:1100px; margin:0 auto; padding: 0 20px 80px}
+    .hero{
+      display:grid; gap:20px; grid-template-columns: 1.2fr .8fr; align-items:center;
+    }
+    .hero > div{background:var(--card); border:1px solid #ffffff12; border-radius:24px; padding:24px; box-shadow:0 10px 30px #00000055}
+    .cta{
+      display:flex; gap:12px; flex-wrap:wrap; margin-top:14px
+    }
+    .btn{
+      background:linear-gradient(135deg,#22d3ee,#a78bfa); color:#0b1020; border:0; padding:12px 16px; border-radius:14px; font-weight:700; cursor:pointer; transition:transform .08s ease, filter .2s ease; box-shadow:0 6px 16px #00000060
+    }
+    .btn:hover{filter:saturate(1.2)}
+    .btn:active{transform:scale(.98)}
+    .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:16px; margin-top:28px}
+    .card{
+      background:linear-gradient(180deg,#0b1020cc,#0b1020f5); border:1px solid #ffffff16; border-radius:20px; padding:16px; min-height:120px; position:relative; overflow:hidden; cursor:pointer;
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover{transform:translateY(-3px); box-shadow:0 12px 26px #00000066; border-color:#ffffff2a}
+    .card .tag{position:absolute; top:10px; right:12px; font-size:12px; color:#94a3b8; letter-spacing:.2px}
+    .hidden-msg{filter: blur(6px); opacity:.7; transition:filter .3s ease, opacity .3s ease}
+    .card.revealed .hidden-msg{filter:none; opacity:1}
+    .note{font-size:16px; line-height:1.45}
+    .count{font-weight:700; color:#a7f3d0}
+    footer{opacity:.75; text-align:center; padding:40px 20px}
+    .tip{font-size:13px; color:#cbd5e1}
+
+    /* Modal */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; backdrop-filter:blur(6px);}
+    .modal.show{display:flex}
+    .modal-card{background:var(--card); border:1px solid #ffffff22; width:min(640px, 92vw); border-radius:24px; padding:24px; box-shadow:0 18px 40px #00000088}
+    .modal-head{display:flex; justify-content:space-between; align-items:center; gap:12px}
+    .x{background:#ffffff12; border:1px solid #ffffff20; border-radius:10px; padding:8px 12px; cursor:pointer}
+    .modal h3{margin:8px 0 0 0}
+
+    /* Confetti canvas */
+    #confetti {position: fixed; inset: 0; pointer-events: none;}
+
+    /* Responsive */
+    @media (max-width: 880px){
+      .hero{grid-template-columns: 1fr}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="stars"></div>
+
+  <!-- Audio: replace song.mp3 with your file name; audio starts after first click -->
+  <audio id="bgm" src="https://github.com/techie0569/mine/blob/main/build/song.mp3.mp3" preload="auto" loop></audio>
+
+  <header>
+    <div>
+      <h1 class="title">Queen <span id="who">Founder</span>, You’ve Got This 🚀</h1>
+      <div class="script">A quiet reminder that you’re never alone in this ✨</div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <h2 style="margin:0 0 6px 0">Open your starter pack of courage</h2>
+        <p style="margin:0 0 8px 0; color:#cbd5e1">Tap the cards to reveal messages. First tap will also start the background song.</p>
+        <div class="cta">
+          <button class="btn" id="revealAll">Reveal all</button>
+          <button class="btn" id="celebrate">Celebrate</button>
+          <button class="btn" id="downloadBtn">For love</button>
+        </div>
+        <p class="tip">Tip: Whenever you doubt yourself, open this — and remember, I’m already proud of you.</p>
+      </div>
+      <div>
+        <h3 style="margin:0 0 12px 0">Progress tracker</h3>
+        <p style="margin:0">Notes opened: <span class="count" id="count">0</span>/<span id="total">0</span></p>
+        <div style="height:10px; background:#ffffff14; border-radius:999px; margin-top:12px; overflow:hidden">
+          <div id="bar" style="height:100%; width:0%; background:linear-gradient(90deg,#34d399,#fbbf24)"></div>
+        </div>
+        <p class="tip" style="margin-top:10px">Every small step counts. Today you showed up — that’s everything.</p>
+      </div>
+    </section>
+
+    <section id="cards" class="grid" aria-live="polite"></section>
+  </div>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <div class="modal-card">
+      <div class="modal-head">
+        <span style="opacity:.8">From me, with love 💛</span>
+        <button class="x" id="closeModal" aria-label="Close">Close ✖</button>
+      </div>
+      <h3 id="m-title">Message</h3>
+      <p id="m-body" class="note"></p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tip">Made with ❤️ + code. If this page made you smile, the mission is already a success.</div>
+  </footer>
+
+  <script>
+    // ========= CUSTOMIZE HERE =========
+    const NAME = "Ibtissem"; // ← put their name here (e.g., "Aditi")
+    const MESSAGES = [
+      "Your idea matters — and so do you.",
+      "Progress over perfection. Tiny wins compound.",
+      "Courage first. Clarity follows.",
+      "You don’t need permission to be great.",
+      "Every ‘no’ is training for the big ‘yes’.",
+      "You are allowed to take up space — especially in your dreams.",
+      "Build what you wish existed.",
+      "Rest is part of the plan, not a detour.",
+      "Momentum loves action. Do the next right thing.",
+      "You’re not behind. You’re exactly on your path.",
+      "Your future customers are rooting for you already.",
+      "I believe in you — wildly, loudly, always."
+    ];
+    // ===================================
+
+    const who = document.getElementById('who');
+    const cardsEl = document.getElementById('cards');
+    const countEl = document.getElementById('count');
+    const totalEl = document.getElementById('total');
+    const barEl = document.getElementById('bar');
+    const modal = document.getElementById('modal');
+    const mBody = document.getElementById('m-body');
+    const mTitle = document.getElementById('m-title');
+    const bgm = document.getElementById('bgm');
+
+    who.textContent = NAME || 'Founder';
+
+    let opened = 0;
+    totalEl.textContent = MESSAGES.length;
+
+    // Build cards
+    const frag = document.createDocumentFragment();
+    MESSAGES.forEach((msg, i) => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', 'Open note ' + (i+1));
+
+      const tag = document.createElement('div');
+      tag.className = 'tag';
+      tag.textContent = `Note ${i+1}`;
+
+      const p = document.createElement('p');
+      p.className = 'note hidden-msg';
+      p.textContent = msg;
+
+      card.appendChild(tag); card.appendChild(p);
+      frag.appendChild(card);
+
+      const open = () => {
+        // Start audio on first user interaction
+        if (bgm && bgm.paused) { bgm.play().catch(()=>{}); }
+
+        if (!card.classList.contains('revealed')){
+          card.classList.add('revealed');
+          opened++; updateProgress();
+          popConfetti();
+        }
+        // show modal
+        mTitle.textContent = `Note ${i+1}`;
+        mBody.textContent = msg;
+        modal.classList.add('show');
+      };
+
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); } });
+      // fix mobile tap
+      card.addEventListener('touchstart', ()=>{}, {passive:true});
+    });
+    cardsEl.appendChild(frag);
+
+    function updateProgress(){
+      countEl.textContent = opened;
+      const pct = Math.round((opened / MESSAGES.length) * 100);
+      barEl.style.width = pct + '%';
+    }
+
+    document.getElementById('closeModal').addEventListener('click', ()=> modal.classList.remove('show'));
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) modal.classList.remove('show'); });
+
+    document.getElementById('revealAll').addEventListener('click', ()=>{
+      document.querySelectorAll('.card').forEach(c=> c.classList.add('revealed'));
+      opened = MESSAGES.length; updateProgress(); popConfetti(180);
+      if (bgm && bgm.paused) { bgm.play().catch(()=>{}); }
+    });
+
+    document.getElementById('celebrate').addEventListener('click', ()=> popConfetti(140));
+
+    // ===== Simple confetti =====
+    const cnv = document.getElementById('confetti');
+    const ctx = cnv.getContext('2d');
+    let pieces = []; let rafId;
+
+    const resize = () => { cnv.width = innerWidth; cnv.height = innerHeight; };
+    addEventListener('resize', resize); resize();
+
+    function popConfetti(amount = 80){
+      const colors = ['#fbbf24','#34d399','#60a5fa','#f472b6','#a78bfa','#22d3ee'];
+      for(let i=0;i<amount;i++){
+        pieces.push({
+          x: innerWidth/2 + (Math.random()*120-60),
+          y: innerHeight/2 + (Math.random()*60-30),
+          vx: (Math.random()*6-3),
+          vy: (Math.random()*-8-2),
+          ay: 0.12 + Math.random()*0.04,
+          size: 4 + Math.random()*6,
+          rot: Math.random()*Math.PI,
+          vr: Math.random()*0.2-0.1,
+          color: colors[(Math.random()*colors.length)|0]
+        });
+      }
+      if(!rafId) tick();
+    }
+
+    function tick(){
+      rafId = requestAnimationFrame(tick);
+      ctx.clearRect(0,0,cnv.width,cnv.height);
+      pieces = pieces.filter(p=> p.y < innerHeight + 20);
+      for(const p of pieces){
+        p.vx *= 0.995; p.vy += p.ay; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+        ctx.restore();
+      }
+      if(pieces.length===0){ cancelAnimationFrame(rafId); rafId = null; }
+    }
+
+    // ===== Download as image (hero area + cards) =====
+    document.getElementById('downloadBtn').addEventListener('click', async ()=>{
+      // Lightweight DOM-to-image without external libs
+      const area = document.body;
+      const svg = await domToSVG(area);
+      const data = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+      const img = new Image();
+      img.onload = ()=>{
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width; canvas.height = img.height;
+        const c = canvas.getContext('2d');
+        c.drawImage(img,0,0);
+        const url = canvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = url; a.download = 'youve-got-this.png'; a.click();
+      };
+      img.src = data;
+    });
+
+    async function domToSVG(root){
+      const css = [...document.styleSheets].map(sheet=>{
+        try{ return [...sheet.cssRules].map(r=>r.cssText).join(''); }catch(e){ return ''; }
+      }).join('\n');
+      const clone = root.cloneNode(true);
+      // Remove audio and canvas from snapshot
+      clone.querySelectorAll('audio, #confetti, .modal').forEach(el=> el.remove());
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n`+
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${root.scrollWidth}" height="${root.scrollHeight}">`+
+        `<foreignObject width="100%" height="100%">`+
+        `<div xmlns="http://www.w3.org/1999/xhtml">`+
+        `<style>${css}</style>${clone.outerHTML}</div></foreignObject></svg>`;
+      return xml;
+    }
+  </script>
+</body>
+</html>
